@@ -74,5 +74,6 @@ function M.generateDay1Debiters(count)
 end
 
 M.items = items
+M.regions = sectorRegions
 
 return M

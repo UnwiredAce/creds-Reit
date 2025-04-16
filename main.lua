@@ -8,16 +8,17 @@ local error = 0
 
 local currentIndex = 1
 local showData = false
-
+local selectedRegions = {}
 local susItems = {}
 
 function love.load()
     math.randomseed(os.time())
     day1Debiters = DebiterGenerator.generateDay1Debiters(10)
     allItems = DebiterGenerator.items
-
+    regions = DebiterGenerator.regions
     for i = 1, 5 do
         table.insert(susItems, allItems[i])
+        table.insert(selectedRegions, regions[i])
     end
 end
 
@@ -83,8 +84,12 @@ function love.draw()
     love.graphics.print("TotalBalance: " .. totalBalance, 10, 10)
     love.graphics.print("ErrorCount: " .. error, 10, 25)
     love.graphics.print("Suspicious Items: " .. #susItems, 10, 50)
+    love.graphics.print("Authorized regions: " .. #selectedRegions, 200, 50)
     for i, item in ipairs(susItems) do
-        love.graphics.print("- " .. item, 50, 50 + i * 20)
+        love.graphics.print("- " .. item, 10, 50 + i * 20)
+    end
+    for i, regions in ipairs(selectedRegions) do
+        love.graphics.print("- " .. regions, 200, 50 + i * 20)
     end
     if showData and day1Debiters[currentIndex] then
         local debtor = day1Debiters[currentIndex]
