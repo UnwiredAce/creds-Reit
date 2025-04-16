@@ -41,27 +41,34 @@ local sectorRegions = {
     "Nova Shard", "Grimegate Zone", "Circuit Haven"
 }
 
-local items = {
-    "Vintage Watch", "Antique Vase", "Rare Coin", "Signed Baseball",
-     "Oil Painting", "Comic Book", "Classic Car",
-      "Old Map", "Diamond Ring", "Porcelain Doll",
-       "Gold Necklace", "Silver Spoon Set", "Historic Document",
-        "Luxury Handbag", "Retro Camera", "Collector's Stamp", "Medieval Sword",
-         "Ceramic Statue", "Bronze Sculpture", "First Edition Book"
+local crimes = {
+    "Data Smuggling", "Synthetic ID Forgery", "Neural Implant Tampering", "Quantum Vault Breach",
+    "AI Companion Hijacking", "Drone Swarm Interference", "Deepfake Extortion", "Surveillance Grid Hacking",
+    "Biochip Counterfeiting", "Black Market Organ Trading", "Augmented Reality Vandalism", "Digital Memory Theft",
+    "Genetic Code Tampering", "Cryptocurrency Laundering", "Emotion Exploit Trafficking", "Cybernetic Sabotage",
+    "Smart City Power Hijack", "Virtual Arms Dealing", "Facial Recognition Spoofing", "Nano-Weapon Smuggling"
 }
-function getRandomDebiter()
+
+local identifications = {
+    "Crimson Fang Emblem", "Obsidian Coil Tattoo", "Neon Vulture Sigil", "Ash Serpent Crest",
+    "Void Lotus Ink", "Chrome Jackal Mark", "Black Circuit Rune", "Iron Halo Symbol",
+    "Scarlet Shard Tattoo", "Ghost Grid Insignia", "Sable Phoenix Crest", "Cyber Wasp Glyph",
+    "Grime Wolf Ink", "Quantum Fang Coil", "Hellbyte Stamp", "Zircon Raven Emblem",
+    "Carbon Eye Mark", "Midnight Thorn Crest", "Echo Skull Insignia", "Static Tiger Seal"
+}
+local function getRandomDebiter()
 
     local name = names[math.random(#names)]
     local occupation = occupations[math.random(#occupations)]
     local sectorRegion = sectorRegions[math.random(#sectorRegions)]
-    local item = items[math.random(#items)]
-    local sellingPrice = math.random(3,50)
+    local crime = crimes[math.random(#crimes)]
+    local identification = identifications[math.random(#identifications)]
     return {
         name = name,
         occupation = occupation,
         sectorRegion = sectorRegion,
-        item = item,
-        sellingPrice = sellingPrice
+        crime = crime,
+        identification = identification,
     }
 end
 
@@ -73,7 +80,6 @@ function M.generateDay1Debiters(count)
     return debiters
 end
 
-M.items = items
-M.regions = sectorRegions
+M.sectorRegions = sectorRegions
 
 return M
