@@ -3,15 +3,22 @@ local DebiterGenerator = require("GenerativeScr")
 
 local day1Debiters = {}
 
-local totalBalance = 10000
+local totalBalance = 20
 local error = 0
 
 local currentIndex = 1
 local showData = false
 
+local susItems = {}
+
 function love.load()
     math.randomseed(os.time())
-    day1Debiters = DebiterGenerator.generateDay1Debiters(20)
+    day1Debiters = DebiterGenerator.generateDay1Debiters(10)
+    allItems = DebiterGenerator.items
+
+    for i = 1, 5 do
+        table.insert(susItems, allItems[i])
+    end
 end
 
 function love.keypressed(key)
@@ -75,12 +82,16 @@ end
 function love.draw()
     love.graphics.print("TotalBalance: " .. totalBalance, 10, 10)
     love.graphics.print("ErrorCount: " .. error, 10, 25)
+    love.graphics.print("Suspicious Items: " .. #susItems, 10, 50)
+    for i, item in ipairs(susItems) do
+        love.graphics.print("- " .. item, 50, 50 + i * 20)
+    end
     if showData and day1Debiters[currentIndex] then
         local debtor = day1Debiters[currentIndex]
-        love.graphics.print(debtor.name, 510, 340)
-        love.graphics.print("occupation: " .. debtor.occupation .."\n".. "Sector: " .. debtor.sectorRegion, 450, 358)
-        love.graphics.print(debtor.balance, 540, 405)
-        love.graphics.print(debtor.debtAmount, 540, 435)
+        love.graphics.print("Name: " .. debtor.name, 400, 340)
+        love.graphics.print("Occupation: " .. debtor.occupation, 400, 390)
+        love.graphics.print("Region: " .. debtor.sectorRegion, 400, 410)
+        love.graphics.print("Selling Item: " .. debtor.item, 400, 430)
         love.graphics.print("Press [Y] to accept", 400, 465)
         love.graphics.print("Press [N] to reject", 400, 490)
     else

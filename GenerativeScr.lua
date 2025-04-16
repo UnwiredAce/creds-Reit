@@ -41,20 +41,27 @@ local sectorRegions = {
     "Nova Shard", "Grimegate Zone", "Circuit Haven"
 }
 
+local items = {
+    "Vintage Watch", "Antique Vase", "Rare Coin", "Signed Baseball",
+     "Oil Painting", "Comic Book", "Classic Car",
+      "Old Map", "Diamond Ring", "Porcelain Doll",
+       "Gold Necklace", "Silver Spoon Set", "Historic Document",
+        "Luxury Handbag", "Retro Camera", "Collector's Stamp", "Medieval Sword",
+         "Ceramic Statue", "Bronze Sculpture", "First Edition Book"
+}
 
-local function getRandomDebiter()
+function getRandomDebiter()
+
     local name = names[math.random(#names)]
     local occupation = occupations[math.random(#occupations)]
     local sectorRegion = sectorRegions[math.random(#sectorRegions)]
-    local balance = math.random(1000, 10000)
-    local debtAmount = math.random(1000, 10000)
+    local item = items[math.random(#items)]
 
     return {
         name = name,
         occupation = occupation,
         sectorRegion = sectorRegion,
-        balance = balance,
-        debtAmount = debtAmount,
+        item = item,
     }
 end
 
@@ -65,5 +72,7 @@ function M.generateDay1Debiters(count)
     end
     return debiters
 end
+
+M.items = items
 
 return M
