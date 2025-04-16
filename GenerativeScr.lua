@@ -49,19 +49,19 @@ local items = {
         "Luxury Handbag", "Retro Camera", "Collector's Stamp", "Medieval Sword",
          "Ceramic Statue", "Bronze Sculpture", "First Edition Book"
 }
-
 function getRandomDebiter()
 
     local name = names[math.random(#names)]
     local occupation = occupations[math.random(#occupations)]
     local sectorRegion = sectorRegions[math.random(#sectorRegions)]
     local item = items[math.random(#items)]
-
+    local sellingPrice = math.random(3,50)
     return {
         name = name,
         occupation = occupation,
         sectorRegion = sectorRegion,
         item = item,
+        sellingPrice = sellingPrice
     }
 end
 
