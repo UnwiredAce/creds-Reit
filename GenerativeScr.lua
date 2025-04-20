@@ -11,8 +11,8 @@ local names = {
     "Devika.Q", "Rakesh.J", "Chaitra.L", "Omkar.E", "Bhavana.W",
     "Rehan.S", "Pooja.F", "Lakshmi.C", "Yash.G", "Naina.H",
     "Kunal.A", "Maya.M", "Sunil.Z", "Praveen.R", "Mohit.T",
-    "Ritika.I", "Gaurav.V", "Nivedita.K", "Tushar.L", "Asmita.X",
-    "Tarun.B", "Anjali.Q", "Farhan.J", "Keerthi.D", "Sujay.C",
+    "Ritika.I", "Gaurav.V", "Tushar.L", "Asmita.X",
+    "Tarun.B", "Farhan.J", "Keerthi.D", "Sujay.C",
     "Harini.Y", "Sameer.O", "Diya.N", "Abhishek.F", "Kanika.H",
     "Vivek.G", "Esha.A", "Nitin.P", "Shraddha.M", "Imran.Z",
     "Shreya.T", "Parth.E", "Jhanvi.S", "Karthik.L", "Mehul.X",
@@ -23,7 +23,7 @@ local names = {
 }
 
 local listedNames = {
-    "Siddharth.S", "Arjun.V", "Priya.K", "Ravi.M", "Meena.T"
+    "Siddharth.S", "Anjali.Q", "Priya.K", "Nivedita.K", "Meena.T"
 }
 
 local occupations = {
@@ -45,7 +45,7 @@ local sectorRegions = {
 }
 
 local listedSectorRegions = {
-    "Echo Basin","Echo Basin","Echo Basin","Echo Basin","Echo Basin"
+    "Echo Basin"
 }
 
 local crimes = {
@@ -70,8 +70,15 @@ local listedIdentifications = {
     "Carbon Eye Mark", "Midnight Thorn Crest", "Echo Skull Insignia", "Static Tiger Seal"
 }
 
-local function getRandomDebiter()
+local function getRandomAndRemove(tbl)
+    if #tbl == 0 then return nil end
+    local index = math.random(#tbl)
+    local value = tbl[index]
+    table.remove(tbl, index)
+    return value
+end
 
+local function getRandomDebiter()
     local name = names[math.random(#names)]
     local age = math.random(19, 43)
     local occupation = occupations[math.random(#occupations)]
@@ -88,33 +95,15 @@ local function getRandomDebiter()
     }
 end
 
-local function getRandomDay1Debiter()
-    local fields = { "name", "occupation", "sectorRegion", "crime", "identification" }
-
-    local listedField = fields[math.random(#fields)]
-
-    local data = {
-        name = names[math.random(#names)],
+local function getRandomDay1Debiter(listedPool)
+    return {
+        name = getRandomAndRemove(listedPool.names),
         age = math.random(19, 43),
-        occupation = occupations[math.random(#occupations)],
-        sectorRegion = sectorRegions[math.random(#sectorRegions)],
-        crime = crimes[math.random(#crimes)],
-        identification = identifications[math.random(#identifications)]
+        occupation = listedOccupations[math.random(#listedOccupations)],
+        sectorRegion = listedSectorRegions[math.random(#listedSectorRegions)],
+        crime = listedCrimes[math.random(#listedCrimes)],
+        identification = listedIdentifications[math.random(#listedIdentifications)]
     }
-
-    if listedField == "name" then
-        data.name = listedNames[math.random(#listedNames)]
-    elseif listedField == "occupation" then
-        data.occupation = listedOccupations[math.random(#listedOccupations)]
-    elseif listedField == "sectorRegion" then
-        data.sectorRegion = listedSectorRegions[math.random(#listedSectorRegions)]
-    elseif listedField == "crime" then
-        data.crime = listedCrimes[math.random(#listedCrimes)]
-    elseif listedField == "identification" then
-        data.identification = listedIdentifications[math.random(#listedIdentifications)]
-    end
-
-    return data
 end
 
 local function shuffle(tbl)
@@ -128,12 +117,22 @@ function M.generateDay1Debiters(count, listedCount)
     local debiters = {}
 
     listedCount = math.min(listedCount, count)
+    local listedPool = {
+        names = { unpack(listedNames) },
+        occupations = { unpack(listedOccupations) },
+        sectorRegions = { unpack(listedSectorRegions) },
+        crimes = { unpack(listedCrimes) },
+        identifications = { unpack(listedIdentifications) },
+    }
 
     for i = 1, listedCount do
-        table.insert(debiters, getRandomDay1Debiter())
+        local debiter = getRandomDay1Debiter(listedPool)
+        if debiter.name then
+            table.insert(debiters, debiter)
+        end
     end
 
-    for i = 1, count - listedCount do
+    for i = 1, count - #debiters do
         table.insert(debiters, getRandomDebiter())
     end
 

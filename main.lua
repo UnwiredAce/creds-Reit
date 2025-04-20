@@ -2,17 +2,23 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 local DebiterGenerator = require("GenerativeScr")
 
 local day1Debiters = {}
-local selectedRegion = "Echo Basin"
+local genericSprites = {}
 
 local error = 0
 local currentIndex = 1
-
 local showData = false
-
 
 function love.load()
     math.randomseed(os.time())
-    day1Debiters = DebiterGenerator.generateDay1Debiters(10, 5)
+    setup = love.graphics.newImage("sprites/Setup.png")
+    day1Debiters = DebiterGenerator.generateDay1Debiters(11, 6)
+
+    for i = 1, 5 do
+        local path = "sprites/Random/Random" .. i .. ".png"
+        if love.filesystem.getInfo(path) then
+            table.insert(genericSprites, love.graphics.newImage(path))
+        end
+    end
 end
 
 local function isNameListed(nameToCheck)
@@ -24,6 +30,22 @@ local function isNameListed(nameToCheck)
     return false
 end
 
+local function loadSpriteIfExists(name)
+    local path = "sprites/" .. name .. ".png"
+    if love.filesystem.getInfo(path) then
+        return love.graphics.newImage(path)
+    else
+        return nil
+    end
+end
+
+local function assignGenericSprite()
+    if #genericSprites > 0 then
+        return genericSprites[math.random(#genericSprites)]
+    else
+        return nil
+    end
+end
 
 function love.keypressed(key)
     local debtor = day1Debiters[currentIndex]
@@ -52,14 +74,28 @@ function love.keypressed(key)
     end
 end
 
-
 function love.update(dt)
 end
 
 function love.draw()
     love.graphics.print("ErrorCount: " .. error, 10, 25)
+    love.graphics.draw(setup, 0, 200, 0, 5, 5)
+
     if showData and day1Debiters[currentIndex] then
         local debtor = day1Debiters[currentIndex]
+
+        if not debtor.sprite then
+            if isNameListed(debtor.name) then
+                debtor.sprite = loadSpriteIfExists(debtor.name)
+            else
+                debtor.sprite = assignGenericSprite()
+            end
+        end
+
+        if debtor.sprite then
+            love.graphics.draw(debtor.sprite, 40, 158, 0, 4, 4)
+        end
+
         love.graphics.print("Name: " .. debtor.name, 400, 340)
         love.graphics.print("Age: " .. debtor.age, 400, 370)
         love.graphics.print("Occupation: " .. debtor.occupation, 400, 390)
