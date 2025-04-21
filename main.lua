@@ -11,9 +11,9 @@ local showData = false
 function love.load()
     math.randomseed(os.time())
     setup = love.graphics.newImage("sprites/Setup.png")
-    day1Debiters = DebiterGenerator.generateDay1Debiters(10, 5)
+    day1Debiters = DebiterGenerator.generateDay1Debiters(20, 5)
 
-    for i = 1, 10 do
+    for i = 1, 15 do
         local path = "sprites/Random/Random" .. i .. ".png"
         if love.filesystem.getInfo(path) then
             table.insert(genericSprites, love.graphics.newImage(path))
