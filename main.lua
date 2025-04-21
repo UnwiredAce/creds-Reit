@@ -93,7 +93,7 @@ function love.draw()
         end
 
         if debtor.sprite then
-            love.graphics.draw(debtor.sprite, 40, 158, 0, 4, 4)
+            love.graphics.draw(debtor.sprite, 65, 222, 0, 4, 4)
         end
 
         love.graphics.print("Name: " .. debtor.name, 400, 340)
